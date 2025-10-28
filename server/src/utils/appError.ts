@@ -26,3 +26,21 @@ export class InternalServerException extends AppError {
     super(message, HTTPSTATUS.INTERNAL_SERVER_ERROR, ErrorCodes.ERR_INTERNAL);
   }
 }
+
+export class NotFoundException extends AppError {
+  constructor(message: string = "Resourse Not Found") {
+    super(message, HTTPSTATUS.NOT_FOUND, ErrorCodes.ERR_NOT_FOUND);
+  }
+}
+
+export class BadRequestException extends AppError {
+  constructor(message: string = "Bad Request") {
+    super(message, HTTPSTATUS.BAD_REQUEST, ErrorCodes.ERR_BAD_REQUEST);
+  }
+}
+
+export class UnauthorizedException extends AppError {
+  constructor(message: string = "Unauthorized Access") {
+    super(message, HTTPSTATUS.UNAUTHORIZED, ErrorCodes.ERR_UNAUTHORIZED);
+  }
+}
