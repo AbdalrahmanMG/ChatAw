@@ -1,14 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { compareValue, hashValue } from "../utils/bcrypt";
-
-export interface IUser {
-  name: string;
-  email: string;
-  password: string;
-  avatar?: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { IUser } from "../types";
 
 const userSchema = new Schema<IUser>(
   {
