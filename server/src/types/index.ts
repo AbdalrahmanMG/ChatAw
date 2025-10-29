@@ -18,3 +18,13 @@ export interface IChat {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IMessage {
+  chatId: mongoose.Types.ObjectId;
+  sender: mongoose.Types.ObjectId;
+  content?: string;
+  image?: string;
+  replyTo?:  mongoose.Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
+}
