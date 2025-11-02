@@ -17,7 +17,10 @@ export const createChatService = async (
   let allParticipantsIds: string[] = [];
 
   if (isGroup && participants.length > 1 && groupName) {
-    allParticipantsIds = [userId, ...participants.filter((p): p is string => !!p)]; //check this later
+    allParticipantsIds = [
+      userId,
+      ...participants.filter((p): p is string => !!p),
+    ]; //check this later
     chat = await chatModel.create({
       participants: allParticipantsIds,
       isGroup: true,
@@ -28,22 +31,43 @@ export const createChatService = async (
     const otherParticipant = await findByIdUserService(participantId);
     if (!otherParticipant) throw new NotFoundException("User not found");
 
-    allParticipantsIds = [userId, participantId]
-    const existingChat = await chatModel.findOne({
-      participants: {
-        $all: allParticipantsIds,
-        $size: 2
-      },
-    }).populate("participants", "name avatar")
+    allParticipantsIds = [userId, participantId];
+    const existingChat = await chatModel
+      .findOne({
+        participants: {
+          $all: allParticipantsIds,
+          $size: 2,
+        },
+      })
+      .populate("participants", "name avatar");
 
-    if(existingChat) return existingChat
+    if (existingChat) return existingChat;
 
     chat = await chatModel.create({
       participants: allParticipantsIds,
       isGroup: false,
       createdBy: userId,
-    })
+    });
 
-    return chat
+    return chat;
   }
+};
+
+export const getUserChatsService = async (userId: string) => {
+  const chats = await chatModel
+    .find({
+      participants: {
+        $in: [userId],
+      },
+    })
+    .populate("participants", "name avatar")
+    .populate({
+      path: "lastMessage",
+      populate: {
+        path: "sender",
+        select: "name avatar",
+      },
+    })
+    .sort({ updatedAt: -1 });
+  return chats;
 };

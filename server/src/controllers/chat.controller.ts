@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { asyncHandler } from "../middlewares/asyncHandler.middleware";
 import { createChatSchema } from "../validators/chat.validator";
 import { HTTPSTATUS } from "../config/http.config";
-import { createChatService } from "../services/chat.service";
+import { createChatService, getUserChatsService } from "../services/chat.service";
 
 export const createChatController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -14,6 +14,18 @@ export const createChatController = asyncHandler(
     return res.status(HTTPSTATUS.OK).json({
       message: "Chat created or retrieved successfully",
       chat,
+    });
+  }
+);
+export const getUserChatsController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const userId = req.user?._id;
+
+    const chats = await getUserChatsService(userId);
+
+    return res.status(HTTPSTATUS.OK).json({
+      message: "User chats retrieved successfully",
+      chats,
     });
   }
 );
