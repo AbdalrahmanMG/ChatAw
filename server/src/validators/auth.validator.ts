@@ -12,7 +12,7 @@ export const emailSchema = z
   export const registerSchema = z.object({
     name: nameSchema,
     email: emailSchema,
-    passwordSchema: passwordSchema,
+    password: passwordSchema,
     avatar: z.string().optional()
   })
 
