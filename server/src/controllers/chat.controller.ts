@@ -14,7 +14,6 @@ export const createChatController = asyncHandler(
     const body = createChatSchema.parse(req.body);
 
     const chat = await createChatService(userId, body);
-
     return res.status(HTTPSTATUS.OK).json({
       message: "Chat created or retrieved successfully",
       chat,
@@ -38,7 +37,7 @@ export const getUserChatsController = asyncHandler(
 export const getSingleChatController = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = req.user?._id;
-    const { id } = chatIdSchema.parse(req.body);
+    const { id } = chatIdSchema.parse(req.params);
     const {chat, messages} = await getSingleChatService(id, userId);
 
     return res.status(HTTPSTATUS.OK).json({

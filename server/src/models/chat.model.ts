@@ -16,6 +16,7 @@ const chatSchema = new Schema<IChat>(
       default: null,
     },
     isGroup: { type: Boolean, default: false },
+    groupName: { type: String },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",

@@ -49,9 +49,8 @@ export const createChatService = async (
       isGroup: false,
       createdBy: userId,
     });
-
-    return chat;
   }
+  return chat;
 };
 
 export const getUserChatsService = async (userId: string) => {
