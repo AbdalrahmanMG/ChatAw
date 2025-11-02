@@ -7,6 +7,8 @@ export interface IUser {
   avatar?: string | null;
   createdAt: Date;
   updatedAt: Date;
+
+  comparePassword(value: string): Promise<boolean>
 }
 
 export interface IChat {

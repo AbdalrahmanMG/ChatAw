@@ -36,6 +36,7 @@ userSchema.pre("save", async function(next) {
   if (this.password && this.isModified("password")){
     this.password = await hashValue(this.password)
   }
+  // next() modern way uses async/await so no need for this line, old way was sync
 })
 
 userSchema.methods.comparePassword = async function( val: string) {
