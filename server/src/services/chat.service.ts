@@ -1,3 +1,4 @@
+import { emitNewChatToParticipants } from "../lib/socket";
 import chatModel from "../models/chat.model";
 import messageModel from "../models/message.model";
 import { BadRequestException, NotFoundException } from "../utils/appError";
@@ -50,6 +51,11 @@ export const createChatService = async (
       createdBy: userId,
     });
   }
+
+  const populatedChat = await chat?.populate("participants", "name avatar");
+
+  emitNewChatToParticipants(allParticipantsIds, populatedChat);
+
   return chat;
 };
 

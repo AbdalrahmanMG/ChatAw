@@ -1,4 +1,8 @@
 import cloudinary from "../config/cloudinary.config";
+import {
+  emitLastMessageToParticipants,
+  emitNewMessageToChatRoom,
+} from "../lib/socket";
 import chatModel from "../models/chat.model";
 import messageModel from "../models/message.model";
 import { BadRequestException, NotFoundException } from "../utils/appError";
@@ -56,6 +60,16 @@ export const sendMessageService = async (
       },
     },
   ]);
+
+  chat.lastMessage = newMessage._id;
+  await chat.save();
+
+  //websocket emit new room message
+  emitNewMessageToChatRoom(userId, chatId, newMessage);
+
+  //websocket emit last personal message
+  const allParticipantsIds = chat.participants.map((id) => id.toString());
+  emitLastMessageToParticipants(allParticipantsIds, chatId, newMessage);
 
   return { userMessage: newMessage, chat };
 };
