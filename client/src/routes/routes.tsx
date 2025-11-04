@@ -4,13 +4,13 @@ import Chat from "@/pages/chat/Chat";
 import SingleChat from "@/pages/chat/SingleChat";
 
 export const AUTH_ROUTES = {
-  SING_IN: "login",
-  SING_UP: "sign-up",
+  SING_IN: "/",
+  SING_UP: "/sign-up",
 };
 
 export const PROTECTED_ROUTES = {
-  CHAT: "chat",
-  SINGLE_CHAT: "chat/:chatId",
+  CHAT: "/chat",
+  SINGLE_CHAT: "/chat/:chatId",
 };
 
 export const authRoutesPaths = [
