@@ -1,10 +1,7 @@
-import "./App.css";
-
+import AppRoutes from "./routes";
 
 function App() {
-  return (
-      <div>app</div>
-  );
+  return <AppRoutes />;
 }
 
 export default App;
