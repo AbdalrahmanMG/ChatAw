@@ -83,7 +83,7 @@
 
 .dark {
   /* Dark mode based on UI screenshots */
-  --background: oklch(0.15 0.02 250); /* deep navy */
+  --background: oklch(22.97% 0.04035 250.002); /* deep navy */
   --foreground: oklch(0.92 0.02 250);
 
   --card: oklch(0.22 0.02 250);
