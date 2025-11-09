@@ -37,28 +37,27 @@ export const initializeSocket = (httpServer: HTTPServer) => {
       if (!decodedToken) return next(new Error("Unauthorized"));
 
       socket.userId = decodedToken.userId;
-      next();
-    } catch (error) {
-      next(new Error("Internal server Error"));
+      return next();
+    } catch (error: any) {
+      return next(new Error(error.name === "TokenExpiredError" ? "TokenExpired" : "Unauthorized"));
     }
   });
 
-  io.use(async (socket: AuthenticatedSocket, next) => {
-    if (!socket.userId) {
-      socket.disconnect(true);
-      return;
-    }
-    const userId = socket.userId;
+  io.on("connection", (socket: AuthenticatedSocket)=>{
+    const userId = socket.userId!;
     const newSocketId = socket.id;
 
+    // set the list of online users and emit them.
+    onlineUsers.set(userId, newSocketId);
     console.log("socket connected", { userId, newSocketId });
 
-    onlineUsers.set(userId, newSocketId);
-
+    // emit online users
     io?.emit("online:users", Array.from(onlineUsers.keys()));
 
     //create personnal room
     socket.join(`user:${userId}`);
+
+    // join chat
     socket.on(
       "chat:join",
       async (chatId: string, callback?: (err?: string) => void) => {
@@ -78,20 +77,20 @@ export const initializeSocket = (httpServer: HTTPServer) => {
         console.log(`User ${userId} left room chat:${chatId}`);
       }
     });
-
+  
     socket.on("disconnect", () => {
       if (onlineUsers.get(userId) === newSocketId) {
         if (userId) onlineUsers.delete(userId);
-
+  
         io?.emit("online:users", Array.from(onlineUsers.keys()));
-
+  
         console.log("socket disconnected", {
           userId,
           newSocketId,
         });
       }
     });
-  });
+  })
 };
 
 function getIO() {
