@@ -29,3 +29,10 @@ export type CreateMessageType = {
   image?: string;
   replyTo?: MessageType | null;
 };
+
+export type CreateChatType = {
+  participantsId: string;
+  participants: string[];
+  isGroup: boolean;
+  groupName: string;
+};
