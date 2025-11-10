@@ -1,4 +1,6 @@
 import { useSocket } from "@/hooks/useSocket";
+import type { ChatType } from "@/types/chatTypes";
+import {format, isThisWeek, isToday, isYesterday} from "date-fns"
 
 export const isUserOnline = (userId?: string) =>{
   if(!userId) return false;
@@ -20,4 +22,41 @@ export const avatarFallback =(name: string): string =>{
   const returnedName = names[0].charAt(0).toUpperCase() + names[names.length - 1].charAt(0).toUpperCase
 
   return returnedName
+}
+
+export const getOtherUsersAndGroup= (chat: ChatType, userId: string | null)=> {
+  const isGroup = chat.isGroup
+  if(isGroup) {
+    return {
+      name: chat.groupName || "N/A",
+      subheading: `${chat.participants.length} memebers`,
+      avatar: "",
+      isGroup
+    }
+  }
+
+  const otherUser = chat?.participants.find(
+    p=> p._id !== userId
+  )
+
+  const isOnline = isUserOnline(otherUser?._id ?? "")
+
+  return {
+    name: otherUser?.name || "Unknown",
+    subheading: isOnline,
+    avatar: otherUser?.avatar || "",
+    isGroup: false,
+    isOnline
+  }
+}
+
+export const formatChatTime = (date: string | Date) =>{
+  if(!date) return ""
+  const newDate = new Date(date)
+  if(isNaN(newDate.getTime())) return "Invalid date"
+
+  if(isToday(newDate)) return format(newDate, "h:mm a")
+  if(isYesterday(newDate)) return "Yesterday"
+  if(isThisWeek(newDate)) return format(newDate, " EEEE")
+  return format(newDate, "M/d")
 }
