@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Sidebar from "./chat/Sidebar";
 
 type AppWrapperProps = {
   children: ReactNode;
@@ -7,7 +8,8 @@ type AppWrapperProps = {
 const AppWrapper = ({ children }: AppWrapperProps) => {
   return (
     <div className="h-full">
-      <main className="h-full">{children}</main>
+      <Sidebar/>
+      <main className="h-full lg:pl-10">{children}</main>
     </div>
   );
 };
