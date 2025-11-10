@@ -1,24 +1,30 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "../theme-provider";
 import { isUserOnline } from "@/utils/utils";
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Moon, Sun, } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Moon, Sun } from "lucide-react";
 import Logo from "../Logo";
 import { PROTECTED_ROUTES } from "@/routes/routes";
 import AvatarBadge from "../AvatarBadge";
 
 const Sidebar = () => {
-  const {user, logout} = useAuth();
-  const {theme, setTheme} = useTheme();
-  
-  const isOnline = isUserOnline(user?._id)
+  const { user, logout } = useAuth();
+  const { theme, setTheme } = useTheme();
+
+  const isOnline = isUserOnline(user?._id);
   return (
     <aside
       className="
   top-0 fixed inset-y-0
-  w-11 left-0 z-9999
-  h-svh bg-primary/85 shadow-sm"
+  w-17 left-0 z-9999
+  h-svh bg-primary/10 shadow-sm"
     >
       <div
         className="
@@ -27,7 +33,7 @@ const Sidebar = () => {
       >
         <Logo
           url={PROTECTED_ROUTES.CHAT}
-          imgClass="size-7"
+          imgClass="size-8 mt-8"
           textClass="text-white"
           showText={false}
         />
@@ -38,15 +44,14 @@ const Sidebar = () => {
         "
         >
           <Button
-            variant="outline"
-            size="icon"
-            className="border-0 rounded-full"
+            variant="default"
+            size="icon-lg"
+            className="border-0 rounded-full mb-3 size-12 p-0"
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           >
             <Sun
+            size={23}
               className="
-              h-[1.2rem]
-              w-[1.2rem]
               scale-100
               rotate-0
               transition-all dark:scale-0 dark:-rotate-90
@@ -55,8 +60,6 @@ const Sidebar = () => {
             <Moon
               className="
              absolute
-              h-[1.2rem]
-              w-[1.2rem]
               scale-0
               rotate-90
               transition-all dark:scale-100
@@ -67,12 +70,13 @@ const Sidebar = () => {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div role="button">
+              <div role="button" className="mb-6">
                 {/* {Avatar} */}
                 <AvatarBadge
                   name={user?.name || "unKnown"}
                   src={user?.avatar || ""}
                   isOnline={isOnline}
+                  size="size-[50px]"
                   // className="!bg-white"
                 />
               </div>

@@ -4,7 +4,9 @@ import { Outlet } from "react-router-dom";
 export default function MainLayout() {
   return (
     <AppWrapper>
-      <Outlet />
+      <div className="h-ful">
+        <Outlet />
+      </div>
     </AppWrapper>
   );
 }

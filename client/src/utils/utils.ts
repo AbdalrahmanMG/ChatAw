@@ -17,7 +17,7 @@ export const avatarFallback =(name: string): string =>{
     return names[0].charAt(0).toUpperCase()
   }
 
-  const returnedName = names[0].charAt(0).toUpperCase() + names[name.length - 1].charAt(0).toUpperCase
+  const returnedName = names[0].charAt(0).toUpperCase() + names[names.length - 1].charAt(0).toUpperCase
 
   return returnedName
 }
