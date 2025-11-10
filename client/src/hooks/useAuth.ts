@@ -31,6 +31,7 @@ export const useAuth = create<IAuthState>()(
           const res = await API.post("/auth/register", data);
           set({ user: res.data.user });
           useSocket.getState().connectSocket();
+          toast.success("Register successfully");
         } catch (error: Error | unknown) {
           const err = error as { response?: { data?: { message?: string } } };
           toast.error(err.response?.data?.message || "Register failed");
@@ -44,6 +45,7 @@ export const useAuth = create<IAuthState>()(
           const res = await API.post("/auth/login", data);
           set({ user: res.data.user });
           useSocket.getState().connectSocket();
+          toast.success("Login successfully");
         } catch (error: Error | unknown) {
           const err = error as { response?: { data?: { message?: string } } };
           toast.error(err.response?.data?.message || "Login failed");
@@ -53,18 +55,19 @@ export const useAuth = create<IAuthState>()(
       },
       logout: async () => {
         try {
-          await API.post("/auth/logout")
-          set({user: null})
-          useSocket.getState().disconnectSocket()  
+          await API.post("/auth/logout");
+          set({ user: null });
+          useSocket.getState().disconnectSocket();
+          toast.success("Logout successfully");
         } catch (error: Error | unknown) {
           const err = error as { response?: { data?: { message?: string } } };
           toast.error(err.response?.data?.message || "Login failed");
         }
       },
       isAuthStatus: async () => {
-         set({ isAuthStatusLoading: true });
+        set({ isAuthStatusLoading: true });
         try {
-          const res = await API.post("/auth/status");
+          const res = await API.get("/auth/status");
           set({ user: res.data.user });
           useSocket.getState().connectSocket();
         } catch (error: Error | unknown) {

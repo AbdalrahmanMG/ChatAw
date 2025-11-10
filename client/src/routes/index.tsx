@@ -9,10 +9,11 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* home/landing */}
-      <Route path="/" element={<LandingPage />} />
-      
+      <Route element={<RouteGuard requiredAuth={false} />}>
+        <Route path="/" element={<LandingPage />} />
+      </Route>
       {/* auth routes */}
-      <Route element={<RouteGuard requiredAuth={false}/>}>
+      <Route element={<RouteGuard requiredAuth={false} />}>
         <Route element={<AuthLayout />}>
           {authRoutesPaths.map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />
@@ -20,7 +21,7 @@ const AppRoutes = () => {
         </Route>
       </Route>
 
-      <Route element={<RouteGuard requiredAuth={true}/>}>
+      <Route element={<RouteGuard requiredAuth={true} />}>
         <Route element={<MainLayout />}>
           {protectedRoutesPaths.map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />

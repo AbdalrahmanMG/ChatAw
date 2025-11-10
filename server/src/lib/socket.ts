@@ -24,12 +24,13 @@ export const initializeSocket = (httpServer: HTTPServer) => {
   // check authenticatoin
   io.use(async (socket: AuthenticatedSocket, next) => {
     try {
+      console.log("token");
       const rawCookie = socket.handshake.headers.cookie;
       if (!rawCookie) return next(new Error("Unauthorized"));
 
       const token = rawCookie?.split("=")?.[1]?.trim();
       if (!token) return next(new Error("Unauthorized"));
-
+      
       const decodedToken = jwt.verify(token, Env.JWT_SECRET) as {
         userId: string;
       };

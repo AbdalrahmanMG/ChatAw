@@ -11,7 +11,9 @@ const LandingPage = () => {
       {/* Navigation */}
       <nav className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <div className="flex items-center gap-0 ml-5">
-          <Logo imgClass="size-[70px]" showText={false} />
+          <div className=" mx-4">
+            <Logo imgClass="size-[45px] ml-3" showText={false} />
+          </div>
           <span className="text-lg sm:text-xl font-semibold text-primary tracking-wider">
             ChatAw
           </span>
