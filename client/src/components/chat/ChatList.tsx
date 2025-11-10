@@ -1,14 +1,35 @@
 import { useChat } from "@/hooks/useChat";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Spinner } from "../ui/spinner";
 import ChatListItem from "./ChatListItem";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import ChatListHeader from "./ChatListHeader";
 
 const ChatList = () => {
+  const navigate = useNavigate();
   const { fetchChats, chats, isChatsLoading } = useChat();
+  const { user } = useAuth();
+  const currentUserId = user?._id || null;
+  const [searchQuery, setSearchQuery] = useState("");
 
+  const filterChats = chats?.filter(
+    (chat) =>
+      chat.groupName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      chat.participants?.some(
+        (p) =>
+          p._id !== currentUserId &&
+          p.name?.toLowerCase().includes(searchQuery.toLowerCase())
+      ) ||
+      []
+  );
   useEffect(() => {
     fetchChats();
   }, [fetchChats]);
+
+  const onRoute = (id: string) => {
+    navigate(`/chat/${id}`);
+  };
 
   return (
     <div
@@ -26,17 +47,29 @@ const ChatList = () => {
     "
     >
       <div className="flex-col">
-        {isChatsLoading ? (
-          <div>
-            <Spinner />
+        <ChatListHeader onSearch={setSearchQuery} />
+        <div className="flex-1 h-[calc(100vh-100px)] overflow-y-auto">
+          <div className="px-2 bg-10 pt-1 space-y-1">
+            {isChatsLoading ? (
+              <div className="flex items-center justify-center">
+                <Spinner />
+              </div>
+            ) : filterChats?.length === 0 ? (
+              <div className="flex items-center justify-center">
+                {searchQuery ? "No chat found" : "No chats created"}
+              </div>
+            ) : (
+              filterChats?.map((chat) => (
+                <ChatListItem
+                  key={chat._id}
+                  currentUserId={currentUserId}
+                  chat={chat}
+                  onClick={() => onRoute(chat._id)}
+                />
+              ))
+            )}
           </div>
-        ) : chats?.length === 0 ? (
-          <div>No Chats Created</div>
-        ) : (
-          chats?.map((chat) => (
-            <ChatListItem key={chat._id} chat={chat} onClick={() => null} />
-          ))
-        )}
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import type { ChatType } from "@/types/chatTypes";
 import { formatChatTime, getOtherUsersAndGroup } from "@/utils/utils";
@@ -8,38 +7,38 @@ import AvatarBadge from "../AvatarBadge";
 interface ChatListItemProps {
   chat: ChatType;
   onClick?: () => void;
+  currentUserId: string | null
 }
-const ChatListItem = ({ chat, onClick }: ChatListItemProps) => {
+const ChatListItem = ({ chat, onClick ,currentUserId}: ChatListItemProps) => {
   const { pathname } = useLocation();
   const { lastMessage, createdAt } = chat;
-  const { user } = useAuth();
-  const currentUserId = user?._id || null;
 
   const { name, avatar, isOnline, isGroup } = getOtherUsersAndGroup(
     chat,
     currentUserId
   );
 
-  const getLastMessageContent = () =>{
-    if(!lastMessage) {
-      return isGroup ?
-      chat.createdBy === currentUserId 
-      ? "Group created"
-      : "You were added"
-      :"Send a message!"
-    }
-    
-    if(isGroup && lastMessage.sender) {
-      return `${lastMessage.sender._id === currentUserId 
-      ? "You"
-      : lastMessage.sender.name
-      }: ${lastMessage.content || "📷 Photo"}`
+  const getLastMessageContent = () => {
+    if (!lastMessage) {
+      return isGroup
+        ? chat.createdBy === currentUserId
+          ? "Group created"
+          : "You were added"
+        : "Send a message!";
     }
 
-    if(lastMessage.image) return "📷 Photo"
+    if (isGroup && lastMessage.sender) {
+      return `${
+        lastMessage.sender._id === currentUserId
+          ? "You"
+          : lastMessage.sender.name
+      }: ${lastMessage.content || "📷 Photo"}`;
+    }
 
-    return lastMessage.content
-  }
+    if (lastMessage.image) return "📷 Photo";
+
+    return lastMessage.content;
+  };
 
   return (
     <button
@@ -51,21 +50,21 @@ const ChatListItem = ({ chat, onClick }: ChatListItemProps) => {
       )}
     >
       <AvatarBadge
-      name={name}
-      src={avatar}
-      isGroup={isGroup}
-      isOnline={isOnline}
+        name={name}
+        src={avatar}
+        isGroup={isGroup}
+        isOnline={isOnline}
       />
       <div className="flex-1 min-w-0">
-      <div className="flex items-center justify-between mb-0.5">
-        <h5 className="text-sm font-semibold truncate">{name}</h5>
-        <span className="text-xs ml-2 shrink-0 text-muted-foreground">
-          {formatChatTime(lastMessage?.updatedAt || createdAt)}
-        </span>
-      </div>
-      <p className="text-xs truncate text-muted-foreground">
-        {getLastMessageContent()}
-      </p>
+        <div className="flex items-center justify-between mb-0.5">
+          <h5 className="text-sm font-semibold truncate">{name}</h5>
+          <span className="text-xs ml-2 shrink-0 text-muted-foreground">
+            {formatChatTime(lastMessage?.updatedAt || createdAt)}
+          </span>
+        </div>
+        <p className="text-xs truncate text-muted-foreground">
+          {getLastMessageContent()}
+        </p>
       </div>
     </button>
   );
