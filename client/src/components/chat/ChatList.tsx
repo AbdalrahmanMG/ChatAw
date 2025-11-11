@@ -5,11 +5,14 @@ import ChatListItem from "./ChatListItem";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import ChatListHeader from "./ChatListHeader";
+import { useSocket } from "@/hooks/useSocket";
+import type { ChatType } from "@/types/chatTypes";
 
 const ChatList = () => {
   const navigate = useNavigate();
-  const { fetchChats, chats, isChatsLoading } = useChat();
   const { user } = useAuth();
+  const {socket} = useSocket()
+  const { fetchChats, chats, isChatsLoading, addNewChat } = useChat();
   const currentUserId = user?._id || null;
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -26,6 +29,18 @@ const ChatList = () => {
   useEffect(() => {
     fetchChats();
   }, [fetchChats]);
+
+  useEffect(()=>{
+    if(!socket) return 
+
+    const handleNewChat = (newChat: ChatType)=>{
+      addNewChat(newChat)
+    }
+    socket.on("chat:new", handleNewChat)
+    return ()=>{
+      socket.off("chat:new", handleNewChat)
+    }
+  },[addNewChat, socket])
 
   const onRoute = (id: string) => {
     navigate(`/chat/${id}`);
