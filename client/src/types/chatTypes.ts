@@ -31,8 +31,8 @@ export type CreateMessageType = {
 };
 
 export type CreateChatType = {
-  participantsId: string;
-  participants: string[];
+  participantId?: string;
+  participants?: string[];
   isGroup: boolean;
-  groupName: string;
+  groupName?: string;
 };

@@ -42,7 +42,7 @@ const ChatList = () => {
       bg-sidebar
       max-w-[calc(100%-40px)]
       w-full
-      left-10
+      left-17
       z-98
     "
     >
