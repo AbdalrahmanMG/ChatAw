@@ -9,7 +9,9 @@ export default function MainLayout() {
         <div className="block">
           <ChatList />
         </div>
-        <Outlet />
+        <div className="pl-7 lg:pl-101!">
+          <Outlet />
+        </div>
       </div>
     </AppWrapper>
   );

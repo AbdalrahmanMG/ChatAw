@@ -1,6 +1,11 @@
+import ChatPlaceholder from "@/components/chat/ChatPlaceholder";
 
 const Chat = () => {
-  return <div>Chat</div>;
+  return (
+    <div className="hidden lg:block h-svh">
+      <ChatPlaceholder />
+    </div>
+  );
 };
 
 export default Chat;
