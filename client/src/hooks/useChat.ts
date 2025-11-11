@@ -22,6 +22,7 @@ interface ChatState {
   createChat: (payload: CreateChatType) => Promise<ChatType | null>;
   fetchSingleChat: (chatId: string) => void;
   addNewChat: (payload: ChatType) => void;
+  updateChatLastMessage: (chatId: string, lastmessage: MessageType) => void;
 }
 
 export const useChat = create<ChatState>()((set, get) => ({
@@ -62,14 +63,14 @@ export const useChat = create<ChatState>()((set, get) => ({
   createChat: async (payload: CreateChatType) => {
     set({ isCreatingChat: true });
     try {
-      const {data} = await API.post("/chat/create", { ...payload });
-      get().addNewChat(data.chat)
+      const { data } = await API.post("/chat/create", { ...payload });
+      get().addNewChat(data.chat);
       toast.success("Chat created successfully");
-      return data.chat
+      return data.chat;
     } catch (error: Error | unknown) {
       const err = error as { response?: { data?: { message?: string } } };
       toast.error(err.response?.data?.message || "Failed to create chat");
-      return null
+      return null;
     } finally {
       set({ isCreatingChat: false });
     }
@@ -85,15 +86,31 @@ export const useChat = create<ChatState>()((set, get) => ({
         (c) => c._id === newChat._id
       );
 
-      if( existingChatIndex !== -1) {
+      if (existingChatIndex !== -1) {
         return {
-          chats: [newChat, ...state.chats.filter(c=> c._id !== newChat._id)]
-        }
+          chats: [newChat, ...state.chats.filter((c) => c._id !== newChat._id)],
+        };
       } else {
         return {
-          chats: [newChat, ...state.chats]
-        }
+          chats: [newChat, ...state.chats],
+        };
       }
+    });
+  },
+
+  updateChatLastMessage: (chatId, lastMessage) => {
+    set((state) => {
+      const chat = state.chats.find((c) => c._id === chatId);
+      if (!chat) return state;
+      return {
+        chats: [
+          {
+            ...chat,
+            lastMessage,
+          },
+          ...state.chats.filter(c=> c._id !== chatId)
+        ],
+      };
     });
   },
 }));
