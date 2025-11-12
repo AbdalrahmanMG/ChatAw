@@ -1,4 +1,5 @@
 import ChatBody from "@/components/chat/ChatBody";
+import ChatFooter from "@/components/chat/ChatFooter";
 import ChatHeader from "@/components/chat/ChatHeader";
 import ChatPlaceholder from "@/components/chat/ChatPlaceholder";
 import { Spinner } from "@/components/ui/spinner";
@@ -67,7 +68,12 @@ const SingleChat = () => {
         )}
       </div>
 
-
+      <ChatFooter
+        replyTo={replyTo}
+        chatId={chatId}
+        currentUserId={currentUserId}
+        onCancelReply={() => setReplyTo(null)}
+      />
     </div>
   );
 };
