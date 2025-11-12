@@ -17,7 +17,7 @@ export const contentWrapperClasses = (isCurrentUser: boolean) => {
 export const messageClasses = (isCurrentUser: boolean) => {
   return cn(
     "min-w-[200px] px-3 py-4 text-sm break-words shadow-sm",
-    isCurrentUser ? "bg-accent dark:bg-primary/40 rounded-tr-xl rounded-l-xl" 
+    isCurrentUser ? "bg-accent bg-primary/20 dark:bg-primary/40 rounded-tr-xl rounded-l-xl" 
     : "bg-[#F5F5F5] dark:bg-accent rounded-bl-xl rounded-r-xl"
   );
 };

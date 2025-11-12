@@ -19,12 +19,9 @@ const ChatHeader = ({ chat, currentUserId }: ChatHeaderProps) => {
 
   return (
     <div
-      className="sticky top-0
-    flex items-center gap-5 border-b border-border
-    bg-card px-2 z-50
-    "
+      className="sticky top-0 flex items-center gap-5 border-b border-border px-4 z-50 bg-muted/20 dark:bg-sidebar "
     >
-      <div className="h-14 px-4 flex items-center">
+      <div className="h-18 px-4 flex items-center">
         <div>
           <ArrowLeft
             className="w-5 h-5 inline-block lg:hidden
@@ -39,6 +36,7 @@ const ChatHeader = ({ chat, currentUserId }: ChatHeaderProps) => {
           src={avatar}
           isGroup={isGroup}
           isOnline={isOnline}
+          size="size-[40px]"
         />
 
         <div className="ml-2">

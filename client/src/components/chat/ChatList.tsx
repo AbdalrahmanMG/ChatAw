@@ -69,13 +69,7 @@ const ChatList = () => {
   };
 
   return (
-    <div
-      className="fixed inset-y-0 z-40 lg:pt-5
-      lg:max-w-[380px] w-full
-      border-r border-border bg-white dark:bg-sidebar
-      flex flex-col left-17
-    "
-    >
+    <div className="fixed inset-y-0 z-40 lg:pt-5 lg:max-w-[380px] w-full border-r border-border bg-muted/20 dark:bg-sidebar flex flex-col left-17    ">
       {/* Header */}
       <ChatListHeader onSearch={setSearchQuery} />
 

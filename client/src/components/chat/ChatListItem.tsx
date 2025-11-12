@@ -54,6 +54,7 @@ const ChatListItem = ({ chat, onClick, currentUserId }: ChatListItemProps) => {
         src={avatar}
         isGroup={isGroup}
         isOnline={isOnline}
+        size="size-[40px]"
       />
 
       <div className="flex-1 min-w-0">

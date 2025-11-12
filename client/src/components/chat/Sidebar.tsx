@@ -20,12 +20,7 @@ const Sidebar = () => {
 
   const isOnline = isUserOnline(user?._id);
   return (
-    <aside
-      className="
-  top-0 fixed inset-y-0
-  w-17 left-0 z-9999
-  h-svh bg-primary/10 shadow-sm"
-    >
+    <aside className="top-0 fixed inset-y-0 w-17 left-0 z-9999 h-svh  shadow-sm">
       <div
         className="
        w-full h-full px-1 pt-1 pb-6 flex flex-col
@@ -50,7 +45,7 @@ const Sidebar = () => {
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           >
             <Sun
-            size={23}
+              size={23}
               className="
               scale-100
               rotate-0

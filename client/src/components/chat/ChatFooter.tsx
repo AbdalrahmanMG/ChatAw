@@ -77,7 +77,7 @@ const ChatFooter = ({
 
   return (
     <>
-      <div className="sticky bottom-0 inset-x-0 z-999 bg-card border-t border-border py-4 ">
+      <div className="sticky bottom-0 inset-x-0 z-999  border-t border-border py-4 bg-muted/20 dark:bg-sidebar">
         {image && !isSendingMsg && (
           <div className="max-w-6xl mx-auto px-8.5">
             <div className="relative w-fit">

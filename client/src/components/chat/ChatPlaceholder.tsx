@@ -16,7 +16,7 @@ const ChatPlaceholder = ({
   description = "Pick a chat or start new one",
 }: ChatPlaceholderProps) => {
   return (
-    <Empty className="w-full h-full flex items-center justify-center bg-muted/20">
+    <Empty className="w-full h-full flex items-center justify-center ">
       <EmptyHeader>
         <EmptyMedia variant="default" className=" w-[600px]">
           <img src={chatImg} alt="Chat placeholder" className="" />
