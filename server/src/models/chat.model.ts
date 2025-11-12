@@ -12,7 +12,7 @@ const chatSchema = new Schema<IChat>(
     ],
     lastMessage: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Message",
       default: null,
     },
     isGroup: { type: Boolean, default: false },

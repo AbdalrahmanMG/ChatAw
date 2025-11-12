@@ -13,7 +13,7 @@ export default function MainLayout() {
         <div className={cn(chatId ? "hidden lg:block" : "block")}>
           <ChatList />
         </div>
-        <div className={cn("pl-7 lg:pl-101!", !chatId ? "hidden lg:block" : "block")}>
+        <div className={cn("pl-7 lg:pl-102!", !chatId ? "hidden lg:block" : "block")}>
           <Outlet />
         </div>
       </div>
