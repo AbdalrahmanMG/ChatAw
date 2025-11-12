@@ -3,6 +3,8 @@ import type { ChatType } from "@/types/chatTypes";
 import { formatChatTime, getOtherUsersAndGroup } from "@/utils/utils";
 import { useLocation } from "react-router-dom";
 import AvatarBadge from "../AvatarBadge";
+import { useEffect, useState } from "react";
+import { useSocket } from "@/hooks/useSocket";
 
 interface ChatListItemProps {
   chat: ChatType;
@@ -12,11 +14,59 @@ interface ChatListItemProps {
 const ChatListItem = ({ chat, onClick, currentUserId }: ChatListItemProps) => {
   const { pathname } = useLocation();
   const { lastMessage, createdAt } = chat;
-
+  const { socket } = useSocket();
   const { name, avatar, isOnline, isGroup } = getOtherUsersAndGroup(
     chat,
     currentUserId
   );
+  const [typingUsers, setTypingUsers] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleTyping = ({
+      userId,
+      chatId,
+    }: {
+      userId: string;
+      chatId: string;
+    }) => {
+      if (chatId !== chat._id || userId === currentUserId) return;
+      setTypingUsers((prev) =>
+        prev.includes(userId) ? prev : [...prev, userId]
+      );
+    };
+
+    const handleStopTyping = ({
+      userId,
+      chatId,
+    }: {
+      userId: string;
+      chatId: string;
+    }) => {
+      if (chatId !== chat._id) return;
+      setTypingUsers((prev) => prev.filter((id) => id !== userId));
+    };
+
+    socket.on("chat:typing", handleTyping);
+    socket.on("chat:stopTyping", handleStopTyping);
+
+    return () => {
+      socket.off("chat:typing", handleTyping);
+      socket.off("chat:stopTyping", handleStopTyping);
+    };
+  }, [socket, chat._id, currentUserId]);
+
+  const typingNames = typingUsers
+    .map((id) => chat?.participants.find((p) => p._id === id)?.name)
+    .filter(Boolean);
+
+  const typingText =
+    typingNames.length === 1
+      ? `is typing...`
+      : typingNames.length > 1
+      ? "Several people are typing..."
+      : "";
 
   const getLastMessageContent = () => {
     if (!lastMessage) {
@@ -65,7 +115,7 @@ const ChatListItem = ({ chat, onClick, currentUserId }: ChatListItemProps) => {
           </span>
         </div>
         <p className="text-xs text-muted-foreground truncate">
-          {getLastMessageContent()}
+          {typingText ? typingText : getLastMessageContent()}
         </p>
       </div>
     </button>

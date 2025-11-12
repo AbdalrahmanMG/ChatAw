@@ -30,7 +30,7 @@ export const initializeSocket = (httpServer: HTTPServer) => {
 
       const token = rawCookie?.split("=")?.[1]?.trim();
       if (!token) return next(new Error("Unauthorized"));
-      
+
       const decodedToken = jwt.verify(token, Env.JWT_SECRET) as {
         userId: string;
       };
@@ -40,11 +40,15 @@ export const initializeSocket = (httpServer: HTTPServer) => {
       socket.userId = decodedToken.userId;
       return next();
     } catch (error: any) {
-      return next(new Error(error.name === "TokenExpiredError" ? "TokenExpired" : "Unauthorized"));
+      return next(
+        new Error(
+          error.name === "TokenExpiredError" ? "TokenExpired" : "Unauthorized"
+        )
+      );
     }
   });
 
-  io.on("connection", (socket: AuthenticatedSocket)=>{
+  io.on("connection", (socket: AuthenticatedSocket) => {
     const userId = socket.userId!;
     const newSocketId = socket.id;
 
@@ -78,20 +82,28 @@ export const initializeSocket = (httpServer: HTTPServer) => {
         console.log(`User ${userId} left room chat:${chatId}`);
       }
     });
-  
+
     socket.on("disconnect", () => {
       if (onlineUsers.get(userId) === newSocketId) {
         if (userId) onlineUsers.delete(userId);
-  
+
         io?.emit("online:users", Array.from(onlineUsers.keys()));
-  
+
         console.log("socket disconnected", {
           userId,
           newSocketId,
         });
       }
     });
-  })
+
+    socket.on("chat:typing", (chatId: string) => {
+      socket.to(`chat:${chatId}`).emit("chat:typing", { userId, chatId });
+    });
+
+    socket.on("chat:stopTyping", (chatId: string) => {
+      socket.to(`chat:${chatId}`).emit("chat:stopTyping", { userId, chatId });
+    });
+  });
 };
 
 function getIO() {

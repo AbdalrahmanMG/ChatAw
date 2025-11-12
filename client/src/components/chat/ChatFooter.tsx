@@ -10,6 +10,7 @@ import { Paperclip, Send, X } from "lucide-react";
 import { Form, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
 import ChatReplyBar from "./ChatReplyBar";
+import { useSocket } from "@/hooks/useSocket";
 
 interface ChatFooterProps {
   replyTo: MessageType | null;
@@ -25,12 +26,15 @@ const ChatFooter = ({
   onCancelReply,
 }: ChatFooterProps) => {
   const { sendMessage, isSendingMsg } = useChat();
+  const { socket } = useSocket();
   const messageSchema = z.object({
     message: z.string().optional(),
   });
 
   const [image, setImage] = useState<string | null>(null);
   const imageRef = useRef<HTMLInputElement | null>(null);
+  const typingTimeout = useRef<number | null>(null);
+  const isTyping = useRef(false);
 
   const form = useForm({
     resolver: zodResolver(messageSchema),
@@ -55,6 +59,22 @@ const ChatFooter = ({
   const handleRemoveImage = () => {
     setImage(null);
     if (imageRef.current) imageRef.current.value = "";
+  };
+
+  const handleInputChange = () => {
+    if (socket && chatId) {
+      if (!isTyping.current) {
+        isTyping.current = true;
+        socket.emit("chat:typing", chatId);
+      }
+    }
+
+    // reset typing timeout
+    if (typingTimeout.current) clearTimeout(typingTimeout.current);
+    typingTimeout.current = setTimeout(() => {
+      isTyping.current = false;
+      socket?.emit("chat:stopTyping", chatId);
+    }, 1500);
   };
 
   const onSubmit = (values: { message?: string }) => {
@@ -135,6 +155,10 @@ const ChatFooter = ({
                     autoComplete="off"
                     placeholder="Type new message"
                     className="min-h-10 bg-background"
+                    onChange={(e) => {
+                      field.onChange(e);
+                      handleInputChange();
+                    }}
                   />
                 </FormItem>
               )}

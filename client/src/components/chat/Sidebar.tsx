@@ -23,7 +23,7 @@ const Sidebar = () => {
     <aside className="top-0 fixed inset-y-0 w-17 left-0 z-9999 h-svh  shadow-sm">
       <div
         className="
-       w-full h-full px-1 pt-1 pb-6 flex flex-col
+       w-full h-full px-1 pt-1  lg:pb-4 flex flex-col
        items-center justify-between"
       >
         <Logo
