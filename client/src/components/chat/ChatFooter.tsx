@@ -6,11 +6,12 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import { Button } from "@/components/ui/button";
-import { Paperclip, Send, X } from "lucide-react";
+import { Paperclip, Send, Smile, X } from "lucide-react";
 import { Form, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
 import ChatReplyBar from "./ChatReplyBar";
 import { useSocket } from "@/hooks/useSocket";
+import EmojiPicker, { type EmojiClickData } from "emoji-picker-react";
 
 interface ChatFooterProps {
   replyTo: MessageType | null;
@@ -32,6 +33,7 @@ const ChatFooter = ({
   });
 
   const [image, setImage] = useState<string | null>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const imageRef = useRef<HTMLInputElement | null>(null);
   const typingTimeout = useRef<number | null>(null);
   const isTyping = useRef(false);
@@ -42,6 +44,8 @@ const ChatFooter = ({
       message: "",
     },
   });
+
+  const messageValue = form.watch("message");
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -75,6 +79,12 @@ const ChatFooter = ({
       isTyping.current = false;
       socket?.emit("chat:stopTyping", chatId);
     }, 1500);
+  };
+
+  const onEmojiClick = (emojiData: EmojiClickData) => {
+    const newValue = (messageValue || "") + emojiData.emoji;
+    form.setValue("message", newValue);
+    setShowEmojiPicker(false);
   };
 
   const onSubmit = (values: { message?: string }) => {
@@ -143,6 +153,28 @@ const ChatFooter = ({
                 ref={imageRef}
                 onChange={handleImageChange}
               />
+            </div>
+            <div className="relative">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                disabled={isSendingMsg}
+                className="rounded-full"
+                onClick={() => setShowEmojiPicker((p) => !p)}
+              >
+                <Smile className="h-4 w-4" />
+              </Button>
+
+              {showEmojiPicker && (
+                <div className="absolute bottom-12 left-0 z-50">
+                  <EmojiPicker
+                    onEmojiClick={onEmojiClick}
+                    width={320}
+                    height={400}
+                  />
+                </div>
+              )}
             </div>
             <FormField
               control={form.control}
