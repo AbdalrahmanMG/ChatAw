@@ -7,9 +7,9 @@ import AvatarBadge from "../AvatarBadge";
 interface ChatListItemProps {
   chat: ChatType;
   onClick?: () => void;
-  currentUserId: string | null
+  currentUserId: string | null;
 }
-const ChatListItem = ({ chat, onClick ,currentUserId}: ChatListItemProps) => {
+const ChatListItem = ({ chat, onClick, currentUserId }: ChatListItemProps) => {
   const { pathname } = useLocation();
   const { lastMessage, createdAt } = chat;
 
@@ -44,9 +44,9 @@ const ChatListItem = ({ chat, onClick ,currentUserId}: ChatListItemProps) => {
     <button
       onClick={onClick}
       className={cn(
-        `w-full items-center gap-2 rounded-sm hover:bg-sidebar-accent 
-      transition-colors text-left`,
-        pathname.includes(chat._id) && "!bg-sidebar-accent"
+        `w-full flex items-center gap-3 px-3 py-2.5 rounded-lg
+     hover:bg-muted/40 transition-colors duration-150 text-left`,
+        pathname.includes(chat._id) && "bg-muted/60"
       )}
     >
       <AvatarBadge
@@ -55,14 +55,15 @@ const ChatListItem = ({ chat, onClick ,currentUserId}: ChatListItemProps) => {
         isGroup={isGroup}
         isOnline={isOnline}
       />
+
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-0.5">
           <h5 className="text-sm font-semibold truncate">{name}</h5>
-          <span className="text-xs ml-2 shrink-0 text-muted-foreground">
+          <span className="text-[11px] text-muted-foreground shrink-0 ml-2">
             {formatChatTime(lastMessage?.updatedAt || createdAt)}
           </span>
         </div>
-        <p className="text-xs truncate text-muted-foreground">
+        <p className="text-xs text-muted-foreground truncate">
           {getLastMessageContent()}
         </p>
       </div>

@@ -12,15 +12,15 @@ interface ChatListHeaderProps {
 
 const ChatListHeader = ({ onSearch }: ChatListHeaderProps) => {
   return (
-    <div className="p-3 border-b border-border">
+    <div className="p-4 border-b border-border">
       <div className="flex items-center justify-between mb-3">
-        <h1 className="text-xl font-semibold">Chats</h1>
+        <h1 className="text-lg font-semibold text-foreground">Messages</h1>
         <NewChatPopover />
       </div>
-      <div>
-        <InputGroup className="text-sm">
+      <div className="relative">
+        <InputGroup className="text-sm rounded-full px-1 py-5.5">
           <InputGroupInput
-            placeholder="Search..."
+            placeholder="Search for chats..."
             onChange={(e) => onSearch(e.target.value)}
           />
           <InputGroupAddon>

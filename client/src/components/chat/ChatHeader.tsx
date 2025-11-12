@@ -52,19 +52,6 @@ const ChatHeader = ({ chat, currentUserId }: ChatHeaderProps) => {
           </p>
         </div>
       </div>
-      <div>
-        <div
-          className={`flex-1
-            text-center
-            py-4 h-full
-            border-b-2
-            border-primary
-            font-medium
-            text-primary`}
-        >
-          Chat
-        </div>
-      </div>
     </div>
   );
 };

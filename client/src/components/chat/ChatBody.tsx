@@ -30,18 +30,15 @@ const ChatBody = ({ chatId, messages, onReply }: ChatBodyProps) => {
   }, [messages]);
 
   return (
-    <div className="overflow-hidden">
-      <div className="h-auto max-h-screen overflow-y-auto">
-        <div className="w-full max-w-6xl mx-auto h-full flex flex-col px-3 pt-36">
-          {messages.map((message) => (
-            <ChatBodyMessage
-              key={message._id}
-              message={message}
-              onReply={onReply}
-            />
-          ))}
-        </div>
-      </div>
+    <div className="w-full max-w-6xl mx-auto flex flex-col px-3 py-2">
+      {messages.map((message) => (
+        <ChatBodyMessage
+          key={message._id}
+          message={message}
+          onReply={onReply}
+        />
+      ))}
+      <div ref={bottomRef} />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import { useRef, useState, type ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import { Paperclip, Send, X } from "lucide-react";
 import { Form, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
@@ -24,7 +24,7 @@ const ChatFooter = ({
   currentUserId,
   onCancelReply,
 }: ChatFooterProps) => {
-  const {sendMessage, isSendingMsg} = useChat()
+  const { sendMessage, isSendingMsg } = useChat();
   const messageSchema = z.object({
     message: z.string().optional(),
   });
@@ -67,8 +67,8 @@ const ChatFooter = ({
       chatId,
       content: values.message,
       image: image || undefined,
-      replyTo: replyTo
-    })
+      replyTo: replyTo,
+    });
 
     onCancelReply();
     handleRemoveImage();
@@ -77,12 +77,7 @@ const ChatFooter = ({
 
   return (
     <>
-      <div
-        className="sticky bottom-0
-       inset-x-0 z-999
-       bg-card border-t border-border py-4
-      "
-      >
+      <div className="sticky bottom-0 inset-x-0 z-999 bg-card border-t border-border py-4 ">
         {image && !isSendingMsg && (
           <div className="max-w-6xl mx-auto px-8.5">
             <div className="relative w-fit">
@@ -95,10 +90,8 @@ const ChatFooter = ({
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="absolute top-px right-1
-                 bg-black/50 text-white rounded-full
-                 cursor-pointer
-                "
+                className="absolute top-px right-1 bg-black/50 text-white rounded-full
+                 cursor-pointer "
                 onClick={handleRemoveImage}
               >
                 <X className="h-3 w-3" />
@@ -109,9 +102,7 @@ const ChatFooter = ({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="max-w-6xl px-8.5 mx-auto
-            flex items-end gap-2
-            "
+            className="max-w-6xl px-8.5 mx-auto flex items-end gap-2"
           >
             <div className="flex items-center gap-1.5">
               <Button
