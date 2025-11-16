@@ -6,11 +6,11 @@ A modern full-stack real-time messaging platform featuring instant communication
 ## 📌 Table of Contents
 - [Overview](#-overview)
 - [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Screenshots](#-screenshots)
+- [Tech Stack](#%EF%B8%8F-tech-stack)
+- [Architecture](#%EF%B8%8F-architecture)
+- [Screenshots](#%EF%B8%8F-screenshots)
 - [Folder Structure](#-folder-structure)
-- [Installation](#-installation)
+- [Installation](#%EF%B8%8F-installation)
   - [Backend Setup](#backend-setup)
   - [Frontend Setup](#frontend-setup)
 - [API Endpoints](#-API-Endpoints)
@@ -177,6 +177,7 @@ project/
 ```bash
 cd server
 pnpm install
+```
 
 ### .env.examples
 PORT=5000
