@@ -11,9 +11,9 @@ A modern full-stack real-time messaging platform featuring instant communication
 - [Screenshots](#%EF%B8%8F-screenshots)
 - [Folder Structure](#-folder-structure)
 - [Installation](#%EF%B8%8F-installation)
-  - [Backend Setup](#backend-setup)
-  - [Frontend Setup](#frontend-setup)
-- [API Endpoints](#-API-Endpoints)
+  - [Backend Setup](#-backend-setup)
+  - [Frontend Setup](#-frontend-setup)
+- [API Endpoints](#-api-endpoints)
 - [Future Improvements](#-future-improvements)
 
 ---
@@ -143,6 +143,7 @@ _Add your application screenshots here._
 ---
 
 ## 📂 Folder Structure
+```bash
 project/
 ├── server/
 │ ├── controllers/ # Route handlers
@@ -161,6 +162,7 @@ project/
 ├── types/ # TypeScript definitions
 ├── utils/ # Helper utilities
 └── styles/ # Themes & global styles
+```
 
 ---
 
@@ -188,11 +190,15 @@ CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
 ### Start server 
+```bash
 pnpm run dev
+```
 
 ### 🔧 Frontend Setup
+```bash
 cd client
 pnpm install
+```
 
 ### Create .env (example):
 VITE_API_URL=http://localhost:8000
@@ -205,19 +211,19 @@ VITE_API_URL=http://localhost:8000
 ## 📌 API Endpoints
 
 ### Auth 
-POST /api/auth/register
-POST /api/auth/login
-POST /api/auth/logout
-GET  /api/auth/status
+- POST /api/auth/register
+- POST /api/auth/login
+- POST /api/auth/logout
+- GET  /api/auth/status
 
 ### Chat
-POST /api/chat/create
-POST /api/chat/message/send
-GET /api/chat/all
-GET  /api/chat/:id
+- POST /api/chat/create
+- POST /api/chat/message/send
+- GET /api/chat/all
+-GET  /api/chat/:id
 
 ### User
-GET /api/chat/all
+- GET /api/chat/all
 
 ## 🔮 Future Improvements
 ### 🚀 Planned Features
